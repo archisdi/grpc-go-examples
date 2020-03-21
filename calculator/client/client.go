@@ -10,6 +10,8 @@ import (
 	"calculator/calcpb"
 )
 
+var Conn *calcpb.CalculateServiceClient
+
 func main() {
 	fmt.Println("im client")
 	cc, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
@@ -18,16 +20,16 @@ func main() {
 	}
 
 	defer cc.Close()
-
-	c := calcpb.NewCalculateServiceClient(cc)
-	add(c)
+	connection := calcpb.NewCalculateServiceClient(cc)
+	Conn = &connection
+	add()
 }
 
-func add(c calcpb.CalculateServiceClient) {
+func add() {
 	request := &calcpb.AddRequest{
 		NumberOne: 10,
 		NumberTwo: 69,
 	}
-	response, _ := c.Add(context.Background(), request)
+	response, _ := (*Conn).Add(context.Background(), request)
 	fmt.Println(response.GetResult())
 }
