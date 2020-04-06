@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strconv"
+	"time"
 
 	"google.golang.org/grpc"
 
@@ -21,8 +23,11 @@ func main() {
 	defer cc.Close()
 
 	c := greetpb.NewGreetServiceClient(cc)
-	doUnary(c)
-	doServerStreaming(c)
+
+	// doUnary(c)
+	// doServerStreaming(c)
+	doClientStreaming(c)
+
 }
 
 func doUnary(c greetpb.GreetServiceClient) {
@@ -58,4 +63,36 @@ func doServerStreaming(c greetpb.GreetServiceClient) {
 			fmt.Println(msg.GetResult())
 		}
 	}
+}
+
+func doClientStreaming(c greetpb.GreetServiceClient) {
+	names := []string{
+		"angelina",
+		"archie",
+		"myrtyl",
+	}
+
+	stream, err := c.LongGreet(context.Background())
+	if err != nil {
+		log.Fatalf("error reading stream")
+	}
+
+	// loop over names
+	for i, name := range names {
+		fmt.Println("sending message number " + strconv.Itoa(i))
+		stream.Send(&greetpb.LongGreetRequest{
+			Greeting: &greetpb.Greeting{
+				FirstName: name,
+				LastName:  "-",
+			},
+		})
+		time.Sleep(1000 * time.Millisecond)
+	}
+
+	if res, err := stream.CloseAndRecv(); err != nil {
+		log.Fatalf("error reading server")
+	} else {
+		fmt.Println(res.GetResult())
+	}
+
 }

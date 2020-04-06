@@ -28,10 +28,23 @@ message GreetManyTimeResponse {
     string result = 1;
 }
 
+// CLIENT STREAM
+
+message LongGreetRequest {
+    Greeting greeting = 1;
+}
+
+message LongGreetResponse {
+    string result = 1;
+}
+
 service GreetService{
     // unary
     rpc Greet(GreetRequest) returns (GreetingResponse) {};
 
     // server streaming
     rpc GreetManyTimes(GreetManyTimeRequest) returns (stream GreetManyTimeResponse) {};
+
+    // client streaming
+    rpc LongGreet(stream LongGreetRequest) returns (LongGreetResponse) {};
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"strconv"
@@ -16,7 +17,7 @@ import (
 type server struct{}
 
 func (*server) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb.GreetingResponse, error) {
-	fmt.Println("greet function was invoked with %v", req)
+	fmt.Println("Greet function was invoked with %v", req)
 	firstName := req.GetGreeting().GetFirstName()
 	lastName := req.GetGreeting().GetLastName()
 	greeting := "Hello " + firstName + " " + lastName
@@ -29,6 +30,8 @@ func (*server) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb.G
 }
 
 func (*server) GreetManyTimes(req *greetpb.GreetManyTimeRequest, stream greetpb.GreetService_GreetManyTimesServer) error {
+	fmt.Println("GreetMany function was invoked with %v", req)
+
 	firstName := req.GetGreeting().GetFirstName()
 	for i := 0; i < 10; i++ {
 		res := &greetpb.GreetManyTimeResponse{
@@ -40,6 +43,24 @@ func (*server) GreetManyTimes(req *greetpb.GreetManyTimeRequest, stream greetpb.
 	}
 
 	return nil
+}
+
+func (*server) LongGreet(stream greetpb.GreetService_LongGreetServer) error {
+	fmt.Println("LongGreet function was invoked")
+	message := "Hola "
+
+	for {
+		if req, err := stream.Recv(); err == io.EOF {
+			return stream.SendAndClose(&greetpb.LongGreetResponse{
+				Result: message,
+			})
+		} else if err != nil {
+			log.Fatalf("error while reading client stream")
+		} else {
+			firstName := req.GetGreeting().GetFirstName()
+			message += firstName + "! "
+		}
+	}
 }
 
 func main() {
