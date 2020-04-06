@@ -26,7 +26,8 @@ func main() {
 
 	// doUnary(c)
 	// doServerStreaming(c)
-	doClientStreaming(c)
+	// doClientStreaming(c)
+	doBiStreaming(c)
 
 }
 
@@ -95,4 +96,50 @@ func doClientStreaming(c greetpb.GreetServiceClient) {
 		fmt.Println(res.GetResult())
 	}
 
+}
+
+func doBiStreaming(c greetpb.GreetServiceClient) {
+	names := []string{
+		"angelina",
+		"archie",
+		"myrtyl",
+	}
+
+	stream, err := c.GreetEveryone(context.Background())
+	if err != nil {
+		log.Fatalf("error reading stream")
+	}
+
+	biChan := make(chan struct{})
+
+	// invoke server
+	go func() {
+		for _, name := range names {
+			stream.Send(&greetpb.GreetEveryoneRequest{
+				Greeting: &greetpb.Greeting{
+					FirstName: name,
+					LastName:  "-",
+				},
+			})
+			time.Sleep(1000 * time.Millisecond)
+		}
+		stream.CloseSend()
+	}()
+
+	// receive
+	go func() {
+		for {
+			if res, err := stream.Recv(); err == io.EOF {
+				break
+			} else if err != nil {
+				log.Fatalf("error reading server")
+				break
+			} else {
+				fmt.Println(res.GetResult())
+			}
+		}
+		close(biChan)
+	}()
+
+	<-biChan
 }
