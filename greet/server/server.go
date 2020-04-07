@@ -9,6 +9,9 @@ import (
 	"strconv"
 	"time"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"greet/greetpb"
 
 	"google.golang.org/grpc"
@@ -17,7 +20,17 @@ import (
 type server struct{}
 
 func (*server) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb.GreetingResponse, error) {
-	fmt.Println("Greet function was invoked with %v", req)
+	fmt.Println("Greet function was invoked")
+
+	// simulate deadline
+	for i := 1; i < 3; i++ {
+		if ctx.Err() == context.Canceled {
+			fmt.Println("the client cancelled the request")
+			return nil, status.Error(codes.Canceled, "the client cancelled the request")
+		}
+		time.Sleep(1 * time.Second)
+	}
+
 	firstName := req.GetGreeting().GetFirstName()
 	lastName := req.GetGreeting().GetLastName()
 	greeting := "Hello " + firstName + " " + lastName

@@ -49,7 +49,7 @@ message GreetEveryoneResponse {
 }
 
 service GreetService{
-    // unary
+    // unary with deadlines
     rpc Greet(GreetRequest) returns (GreetingResponse) {};
 
     // server streaming

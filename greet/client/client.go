@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"greet/greetpb"
 )
@@ -24,22 +26,38 @@ func main() {
 
 	c := greetpb.NewGreetServiceClient(cc)
 
-	// doUnary(c)
+	doUnary(c, 5*time.Second)
+	doUnary(c, 1*time.Second)
+
 	// doServerStreaming(c)
 	// doClientStreaming(c)
-	doBiStreaming(c)
+	// doBiStreaming(c)
 
 }
 
-func doUnary(c greetpb.GreetServiceClient) {
+func doUnary(c greetpb.GreetServiceClient, timeout time.Duration) {
 	request := &greetpb.GreetRequest{
 		Greeting: &greetpb.Greeting{
 			FirstName: "Archie",
 			LastName:  "Isdiningrat",
 		},
 	}
-	response, _ := c.Greet(context.Background(), request)
-	fmt.Println(response.GetResult())
+
+	// set timeout
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	if response, err := c.Greet(ctx, request); err != nil {
+
+		if resErr, ok := status.FromError(err); ok && resErr.Code() == codes.DeadlineExceeded {
+			fmt.Println("Request timeout")
+		} else {
+			fmt.Println(err.Error())
+		}
+
+	} else {
+		fmt.Println(response.GetResult())
+	}
 }
 
 func doServerStreaming(c greetpb.GreetServiceClient) {

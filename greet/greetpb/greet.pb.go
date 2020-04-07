@@ -436,7 +436,7 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type GreetServiceClient interface {
-	// unary
+	// unary with deadlines
 	Greet(ctx context.Context, in *GreetRequest, opts ...grpc.CallOption) (*GreetingResponse, error)
 	// server streaming
 	GreetManyTimes(ctx context.Context, in *GreetManyTimeRequest, opts ...grpc.CallOption) (GreetService_GreetManyTimesClient, error)
@@ -562,7 +562,7 @@ func (x *greetServiceGreetEveryoneClient) Recv() (*GreetEveryoneResponse, error)
 
 // GreetServiceServer is the server API for GreetService service.
 type GreetServiceServer interface {
-	// unary
+	// unary with deadlines
 	Greet(context.Context, *GreetRequest) (*GreetingResponse, error)
 	// server streaming
 	GreetManyTimes(*GreetManyTimeRequest, GreetService_GreetManyTimesServer) error
