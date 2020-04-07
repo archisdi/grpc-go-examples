@@ -8,6 +8,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/reflection"
 
 	"calculator/calcpb"
 
@@ -49,6 +50,9 @@ func main() {
 
 	s := grpc.NewServer()
 	calcpb.RegisterCalculateServiceServer(s, &server{})
+
+	// register reflection on gRpc server
+	reflection.Register(s)
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf(err.Error())
