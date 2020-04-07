@@ -4,11 +4,15 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math"
 	"net"
+
+	"google.golang.org/grpc/codes"
 
 	"calculator/calcpb"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/status"
 )
 
 type server struct{}
@@ -17,6 +21,22 @@ func (*server) Add(ctx context.Context, req *calcpb.AddRequest) (*calcpb.AddResp
 	fmt.Println("add has been called with %v", req)
 	return &calcpb.AddResponse{
 		Result: req.GetNumberOne() + req.GetNumberTwo(),
+	}, nil
+}
+
+func (*server) SquareRoot(ctx context.Context, req *calcpb.SquareRootRequest) (*calcpb.SquareRootResponse, error) {
+	fmt.Println("square root has been called with %v", req)
+
+	number := req.GetNumber()
+	if number < 0 {
+		return nil, status.Errorf(
+			codes.InvalidArgument,
+			"received a negative number",
+		)
+	}
+
+	return &calcpb.SquareRootResponse{
+		NumberRoot: math.Sqrt(float64(number)),
 	}, nil
 }
 

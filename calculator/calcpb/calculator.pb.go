@@ -110,9 +110,89 @@ func (m *AddResponse) GetResult() int32 {
 	return 0
 }
 
+type SquareRootRequest struct {
+	Number               int32    `protobuf:"varint,1,opt,name=number,proto3" json:"number,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SquareRootRequest) Reset()         { *m = SquareRootRequest{} }
+func (m *SquareRootRequest) String() string { return proto.CompactTextString(m) }
+func (*SquareRootRequest) ProtoMessage()    {}
+func (*SquareRootRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f664ca1c5a6f0507, []int{2}
+}
+
+func (m *SquareRootRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SquareRootRequest.Unmarshal(m, b)
+}
+func (m *SquareRootRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SquareRootRequest.Marshal(b, m, deterministic)
+}
+func (m *SquareRootRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SquareRootRequest.Merge(m, src)
+}
+func (m *SquareRootRequest) XXX_Size() int {
+	return xxx_messageInfo_SquareRootRequest.Size(m)
+}
+func (m *SquareRootRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_SquareRootRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SquareRootRequest proto.InternalMessageInfo
+
+func (m *SquareRootRequest) GetNumber() int32 {
+	if m != nil {
+		return m.Number
+	}
+	return 0
+}
+
+type SquareRootResponse struct {
+	NumberRoot           float64  `protobuf:"fixed64,1,opt,name=number_root,json=numberRoot,proto3" json:"number_root,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SquareRootResponse) Reset()         { *m = SquareRootResponse{} }
+func (m *SquareRootResponse) String() string { return proto.CompactTextString(m) }
+func (*SquareRootResponse) ProtoMessage()    {}
+func (*SquareRootResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f664ca1c5a6f0507, []int{3}
+}
+
+func (m *SquareRootResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SquareRootResponse.Unmarshal(m, b)
+}
+func (m *SquareRootResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SquareRootResponse.Marshal(b, m, deterministic)
+}
+func (m *SquareRootResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SquareRootResponse.Merge(m, src)
+}
+func (m *SquareRootResponse) XXX_Size() int {
+	return xxx_messageInfo_SquareRootResponse.Size(m)
+}
+func (m *SquareRootResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_SquareRootResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SquareRootResponse proto.InternalMessageInfo
+
+func (m *SquareRootResponse) GetNumberRoot() float64 {
+	if m != nil {
+		return m.NumberRoot
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*AddRequest)(nil), "calculator.AddRequest")
 	proto.RegisterType((*AddResponse)(nil), "calculator.AddResponse")
+	proto.RegisterType((*SquareRootRequest)(nil), "calculator.SquareRootRequest")
+	proto.RegisterType((*SquareRootResponse)(nil), "calculator.SquareRootResponse")
 }
 
 func init() {
@@ -120,19 +200,23 @@ func init() {
 }
 
 var fileDescriptor_f664ca1c5a6f0507 = []byte{
-	// 177 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x4a, 0x4e, 0xcc, 0x49,
-	0x2e, 0xcd, 0x49, 0x2c, 0xc9, 0x2f, 0xd2, 0x07, 0x31, 0x0b, 0x92, 0xf4, 0x11, 0x22, 0x7a, 0x05,
-	0x45, 0xf9, 0x25, 0xf9, 0x42, 0x5c, 0x08, 0x11, 0x25, 0x0f, 0x2e, 0x2e, 0xc7, 0x94, 0x94, 0xa0,
-	0xd4, 0xc2, 0xd2, 0xd4, 0xe2, 0x12, 0x21, 0x19, 0x2e, 0xce, 0xbc, 0xd2, 0xdc, 0xa4, 0xd4, 0x22,
-	0xff, 0xbc, 0x54, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xd6, 0x20, 0x84, 0x00, 0x42, 0x36, 0xa4, 0x3c,
-	0x5f, 0x82, 0x09, 0x59, 0x36, 0xa4, 0x3c, 0x5f, 0x49, 0x95, 0x8b, 0x1b, 0x6c, 0x52, 0x71, 0x41,
-	0x7e, 0x5e, 0x71, 0xaa, 0x90, 0x18, 0x17, 0x5b, 0x51, 0x6a, 0x71, 0x69, 0x4e, 0x09, 0xd4, 0x1c,
-	0x28, 0xcf, 0xc8, 0x87, 0x4b, 0xc0, 0x19, 0x6a, 0x7d, 0x6a, 0x70, 0x6a, 0x51, 0x59, 0x66, 0x72,
-	0xaa, 0x90, 0x05, 0x17, 0xb3, 0x63, 0x4a, 0x8a, 0x90, 0x98, 0x1e, 0x92, 0x53, 0x11, 0xae, 0x92,
-	0x12, 0xc7, 0x10, 0x87, 0xd8, 0xa1, 0xc4, 0xe0, 0xc4, 0x11, 0xc5, 0x06, 0xf1, 0x65, 0x12, 0x1b,
-	0xd8, 0x6f, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x09, 0xf4, 0xce, 0xf4, 0x01, 0x01, 0x00,
-	0x00,
+	// 248 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x91, 0x4f, 0x4b, 0xc3, 0x40,
+	0x10, 0xc5, 0x8d, 0x62, 0xd0, 0xd7, 0x8b, 0xce, 0x21, 0x96, 0xe2, 0x3f, 0x16, 0x04, 0x41, 0x68,
+	0x41, 0x11, 0xbc, 0x56, 0x2f, 0x5e, 0x44, 0x48, 0x7b, 0xf2, 0x22, 0xf9, 0x33, 0x07, 0x21, 0x66,
+	0xd2, 0xcd, 0xae, 0xfd, 0x30, 0x7e, 0x59, 0x69, 0x77, 0xc3, 0x2e, 0x14, 0x6f, 0x99, 0xf7, 0x1e,
+	0xbf, 0xc9, 0xdb, 0x81, 0xaa, 0x8a, 0xa6, 0xb2, 0x4d, 0x61, 0x44, 0xcf, 0x36, 0x9f, 0x5d, 0x39,
+	0x0b, 0xca, 0xb4, 0xd3, 0x62, 0x84, 0x10, 0x14, 0xf5, 0x0a, 0xcc, 0xeb, 0x3a, 0xe7, 0x95, 0xe5,
+	0xde, 0xd0, 0x39, 0x8e, 0x5b, 0xfb, 0x5d, 0xb2, 0x7e, 0x6f, 0x79, 0x9c, 0x5c, 0x27, 0xb7, 0x87,
+	0x79, 0x10, 0x82, 0xbb, 0x5c, 0xcb, 0x78, 0x3f, 0x76, 0x97, 0x6b, 0x51, 0x37, 0x18, 0x6d, 0x49,
+	0x7d, 0x27, 0x6d, 0xcf, 0x94, 0x21, 0xd5, 0xdc, 0xdb, 0xc6, 0x78, 0x8e, 0x9f, 0xd4, 0x1d, 0x4e,
+	0x17, 0x2b, 0x5b, 0x68, 0xce, 0x45, 0xcc, 0xb0, 0x37, 0x43, 0xea, 0x40, 0x43, 0xd8, 0x4d, 0xea,
+	0x11, 0x14, 0x87, 0x3d, 0xfa, 0x0a, 0x23, 0xe7, 0x7f, 0x6a, 0x11, 0xc7, 0x4f, 0x72, 0x38, 0x69,
+	0x13, 0xbc, 0xff, 0x4d, 0x70, 0xf2, 0xe2, 0x3b, 0xf2, 0x82, 0xf5, 0xcf, 0x57, 0xc5, 0xf4, 0x84,
+	0x83, 0x79, 0x5d, 0x53, 0x36, 0x8d, 0xde, 0x23, 0x54, 0x9f, 0x9c, 0xed, 0xe8, 0x6e, 0x9b, 0xda,
+	0xa3, 0x37, 0x20, 0xfc, 0x05, 0x5d, 0xc4, 0xc1, 0x9d, 0x2a, 0x93, 0xcb, 0xff, 0xec, 0x01, 0xf7,
+	0x7c, 0xf4, 0x91, 0xba, 0xcb, 0x94, 0xe9, 0xf6, 0x1e, 0x0f, 0x7f, 0x01, 0x00, 0x00, 0xff, 0xff,
+	0x53, 0x4b, 0xb5, 0xcc, 0xb5, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -149,6 +233,7 @@ const _ = grpc.SupportPackageIsVersion6
 type CalculateServiceClient interface {
 	// unary
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
+	SquareRoot(ctx context.Context, in *SquareRootRequest, opts ...grpc.CallOption) (*SquareRootResponse, error)
 }
 
 type calculateServiceClient struct {
@@ -168,10 +253,20 @@ func (c *calculateServiceClient) Add(ctx context.Context, in *AddRequest, opts .
 	return out, nil
 }
 
+func (c *calculateServiceClient) SquareRoot(ctx context.Context, in *SquareRootRequest, opts ...grpc.CallOption) (*SquareRootResponse, error) {
+	out := new(SquareRootResponse)
+	err := c.cc.Invoke(ctx, "/calculator.CalculateService/SquareRoot", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CalculateServiceServer is the server API for CalculateService service.
 type CalculateServiceServer interface {
 	// unary
 	Add(context.Context, *AddRequest) (*AddResponse, error)
+	SquareRoot(context.Context, *SquareRootRequest) (*SquareRootResponse, error)
 }
 
 // UnimplementedCalculateServiceServer can be embedded to have forward compatible implementations.
@@ -180,6 +275,9 @@ type UnimplementedCalculateServiceServer struct {
 
 func (*UnimplementedCalculateServiceServer) Add(ctx context.Context, req *AddRequest) (*AddResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
+}
+func (*UnimplementedCalculateServiceServer) SquareRoot(ctx context.Context, req *SquareRootRequest) (*SquareRootResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SquareRoot not implemented")
 }
 
 func RegisterCalculateServiceServer(s *grpc.Server, srv CalculateServiceServer) {
@@ -204,6 +302,24 @@ func _CalculateService_Add_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CalculateService_SquareRoot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SquareRootRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CalculateServiceServer).SquareRoot(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/calculator.CalculateService/SquareRoot",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CalculateServiceServer).SquareRoot(ctx, req.(*SquareRootRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _CalculateService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "calculator.CalculateService",
 	HandlerType: (*CalculateServiceServer)(nil),
@@ -211,6 +327,10 @@ var _CalculateService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Add",
 			Handler:    _CalculateService_Add_Handler,
+		},
+		{
+			MethodName: "SquareRoot",
+			Handler:    _CalculateService_SquareRoot_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

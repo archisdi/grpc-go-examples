@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/status"
 
 	"calculator/calcpb"
 )
@@ -23,6 +24,7 @@ func main() {
 	connection := calcpb.NewCalculateServiceClient(cc)
 	Conn = &connection
 	add()
+	sqrt()
 }
 
 func add() {
@@ -32,4 +34,23 @@ func add() {
 	}
 	response, _ := (*Conn).Add(context.Background(), request)
 	fmt.Println(response.GetResult())
+}
+
+func sqrt() {
+	requestA := &calcpb.SquareRootRequest{
+		Number: -10,
+	}
+
+	if response, err := (*Conn).SquareRoot(context.Background(), requestA); err != nil {
+		resErr, ok := status.FromError(err)
+		if ok {
+			fmt.Println(resErr.Message())
+			fmt.Println(resErr.Code())
+		} else {
+			fmt.Println(err.Error())
+		}
+	} else {
+		fmt.Println(response.GetNumberRoot())
+	}
+
 }
