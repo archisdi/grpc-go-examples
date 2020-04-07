@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/status"
 
 	"greet/greetpb"
@@ -102,7 +103,18 @@ func main() {
 		log.Fatalf(err.Error())
 	}
 
-	s := grpc.NewServer()
+	// SSL Configurations
+	certFile := "../ssl/server.crt"
+	keyFile := "../ssl/server.pem"
+	creds, err := credentials.NewServerTLSFromFile(certFile, keyFile)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	// --
+
+	opts := grpc.Creds(creds)
+	s := grpc.NewServer(opts)
+
 	greetpb.RegisterGreetServiceServer(s, &server{})
 
 	if err := s.Serve(lis); err != nil {

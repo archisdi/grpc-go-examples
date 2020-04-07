@@ -10,6 +10,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/status"
 
 	"greet/greetpb"
@@ -17,7 +18,17 @@ import (
 
 func main() {
 	fmt.Println("im client")
-	cc, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+
+	// SSL Configuration
+	certFile := "../ssl/ca.crt" // certificate authority
+	creds, err := credentials.NewClientTLSFromFile(certFile, "")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	// --
+
+	opts := grpc.WithTransportCredentials(creds)
+	cc, err := grpc.Dial("localhost:50051", opts)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
